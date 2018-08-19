@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 
 	utils "github.com/wuyuMk7/kancolle-extract/lib/download"
@@ -59,7 +60,7 @@ func (ship KCShip) GetImage(dirname string) error {
 		"fullDmg": baseUrl + "full_dmg/" + shipPrefix + "_" + ship.suffix("ship_full_dmg") + ".png",
 	}
 
-	fmt.Println("Downloading ship id ", ship.ID, "...")
+	log.Println("Downloading ship id ", ship.ID, "...")
 
 	baseDir := fmt.Sprint(dirname, "/", ship.ID, "/")
 	if _, err := os.Stat(baseDir); os.IsNotExist(err) {
@@ -76,12 +77,12 @@ func (ship KCShip) GetImage(dirname string) error {
 	nameFile.WriteString(ship.Name)
 
 	for key, url := range imageUrls {
-		fmt.Print(key + " image ...")
+		log.Print(key, " image ...")
 		err := utils.Download(url, baseDir+key)
 		if err != nil {
 			return err
 		}
-		fmt.Println("Done")
+		log.Println("Done")
 	}
 
 	return nil
@@ -97,7 +98,7 @@ func (kc *KC) LoadInfo(dataFileName string) error {
 		return err
 	}
 	defer dataFile.Close()
-	fmt.Println("Successfully loaded datafile " + dataFileName)
+	log.Println("Successfully loaded datafile " + dataFileName)
 
 	data, err := ioutil.ReadAll(dataFile)
 
@@ -120,15 +121,15 @@ func (kc KC) GetImage(imageDirName string) error {
 	}
 
 	if len(kc.Data.KCShips) > 0 {
-		fmt.Println("Extracting images...")
+		log.Println("Extracting images...")
 		for _, ship := range kc.Data.KCShips {
 			if err := ship.GetImage(imageDirName); err != nil {
-				fmt.Println(fmt.Sprint(ship.ID, " image extraction failed."))
-				fmt.Println(err)
+				log.Print(fmt.Sprint(ship.ID, " image extraction failed."))
+				log.Println(err)
 			}
 		}
 	} else {
-		fmt.Println("No ship information input. Abort.")
+		log.Println("No ship information input. Abort.")
 	}
 
 	return nil

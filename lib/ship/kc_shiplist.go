@@ -77,6 +77,9 @@ func (ship KCShip) GetImage(dirname string) error {
 	nameFile.WriteString(ship.Name)
 
 	for key, url := range imageUrls {
+		if ship.ID > 1500 && (key == "card" || key == "cardDmg") {
+			continue
+		}
 		log.Print(key, " image ...")
 		err := utils.Download(url, fmt.Sprint(baseDir, key, ".png"))
 		if err != nil {

@@ -78,7 +78,7 @@ func (ship KCShip) GetImage(dirname string) error {
 
 	for key, url := range imageUrls {
 		log.Print(key, " image ...")
-		err := utils.Download(url, baseDir+key)
+		err := utils.Download(url, fmt.Sprint(baseDir, key, ".png"))
 		if err != nil {
 			return err
 		}

@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func Test_download(t *testing.T) {
+func TestDownload(t *testing.T) {
 	url := "https://github.com"
 	fileName := "test_download"
 

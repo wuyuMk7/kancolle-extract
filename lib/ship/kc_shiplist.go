@@ -62,7 +62,7 @@ func (ship KCShip) GetImage(dirname string) error {
 
 	log.Println("Downloading ship id ", ship.ID, "...")
 
-	baseDir := fmt.Sprint(dirname, "/", ship.ID, "/")
+	baseDir := fmt.Sprint(dirname, "/", ship.ID, "_", ship.Name, "/")
 	if _, err := os.Stat(baseDir); os.IsNotExist(err) {
 		if err = os.MkdirAll(baseDir, 0744); err != nil {
 			return err

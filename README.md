@@ -1,6 +1,6 @@
 # kancolle-extract
 
-A tool to extract resource files from KaColle
+A tool to extract resource files from KanColle
 
 ## Usage
 

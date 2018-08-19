@@ -101,7 +101,6 @@ func (kc *KC) LoadInfo(dataFileName string) error {
 		return err
 	}
 	defer dataFile.Close()
-	log.Println("Successfully loaded datafile " + dataFileName)
 
 	data, err := ioutil.ReadAll(dataFile)
 
@@ -109,6 +108,7 @@ func (kc *KC) LoadInfo(dataFileName string) error {
 	if err != nil {
 		return err
 	}
+	log.Println("Successfully loaded datafile " + dataFileName)
 
 	return nil
 }
@@ -123,17 +123,23 @@ func (kc KC) GetImage(imageDirName string) error {
 		}
 	}
 
+	successCount := 0
+	failCount := 0
 	if len(kc.Data.KCShips) > 0 {
 		log.Println("Extracting images...")
 		for _, ship := range kc.Data.KCShips {
 			if err := ship.GetImage(imageDirName); err != nil {
+				failCount = failCount + 1
 				log.Print(fmt.Sprint(ship.ID, " image extraction failed."))
 				log.Println(err)
+			} else {
+				successCount = successCount + 1
 			}
 		}
 	} else {
 		log.Println("No ship information input. Abort.")
 	}
+	log.Println(fmt.Sprint("image extraction - ", successCount+failCount, " ship(s), ", successCount, " successful, ", failCount, " failed."))
 
 	return nil
 }
